@@ -57,3 +57,10 @@ test('checks for getEmail() method in Employee class', () => {
     expect(employee.getEmail()).toEqual(expect.stringContaining('@'))
     expect(employee.getEmail()).toEqual(expect.stringContaining('.'))
 })
+
+// getting constructor name for the role 
+test('Check for getRole() method in Employee class', () => {
+    const employee = new Employee('Maki', 1, 'maki-miko@hotmail.com')
+    
+    expect(employee.getRole()).toEqual("Employee")
+})
