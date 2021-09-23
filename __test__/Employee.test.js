@@ -1,7 +1,4 @@
 // properties :
-
-        // getId()
-        // getEmail()
         // getRole()  returns employee
 
 const Employee = require('../lib/Employee.js')
@@ -51,4 +48,12 @@ test('checks for getId() in Employee class', () => {
 
     expect(employee.getId()).toEqual(expect.any(Number))
     console.log(employee.getId())
+})
+
+test('checks for getEmail() method in Employee class', () => {
+    const employee = new Employee('Maki', 1, 'maki-miko@hotmail.com')
+
+    expect(employee.getEmail()).toEqual(expect.any(String))
+    expect(employee.getEmail()).toEqual(expect.stringContaining('@'))
+    expect(employee.getEmail()).toEqual(expect.stringContaining('.'))
 })
