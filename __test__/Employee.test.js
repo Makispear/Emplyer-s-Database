@@ -1,6 +1,3 @@
-// properties :
-        // getRole()  returns employee
-
 const Employee = require('../lib/Employee.js')
 
 // checks if creates is an object
@@ -50,6 +47,7 @@ test('checks for getId() in Employee class', () => {
     console.log(employee.getId())
 })
 
+// gets email() from Employee class 
 test('checks for getEmail() method in Employee class', () => {
     const employee = new Employee('Maki', 1, 'maki-miko@hotmail.com')
 
