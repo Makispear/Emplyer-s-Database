@@ -11,3 +11,10 @@ test('check if Engineer.js exports constructor from Employee.js', () => {
     expect(engineer.getEmail()).toEqual(expect.any(String))
     expect(engineer.getRole()).toEqual(engineer.constructor.name)
 })
+
+test('check github username in Manager class', () => {
+    const engineer = new Engineer('Maki', 1, 'maki-miko@hotmail.com', 'Makispear')
+
+    expect(engineer.githubUsername).toEqual(expect.any(String))
+    expect(engineer.githubUsername.length).toBeLessThanOrEqual(39)
+})
