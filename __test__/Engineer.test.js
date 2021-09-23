@@ -18,3 +18,10 @@ test('check github username in Manager class', () => {
     expect(engineer.githubUsername).toEqual(expect.any(String))
     expect(engineer.githubUsername.length).toBeLessThanOrEqual(39)
 })
+
+test('checks for getGithub() in Engineer class', () => {
+    const engineer = new Engineer('Maki', 1, 'maki-miko@hotmail.com', 'Makispear')
+    const githubUsername = engineer.githubUsername
+    
+    expect(engineer.getGithub()).toEqual(githubUsername)
+})
