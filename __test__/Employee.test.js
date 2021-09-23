@@ -23,3 +23,11 @@ test('checks for employee name', () => {
 
     expect(employee.name).toEqual(expect.any(String))
 })
+
+// checks for id of employee 
+test('checks for employee ID', () => {
+    const employee = new Employee('Maki', 1)
+
+    expect(employee.id).toEqual(expect.any(Number))
+    expect(employee.id).toBeGreaterThan(0)
+})
