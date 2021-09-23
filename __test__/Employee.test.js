@@ -31,3 +31,10 @@ test('checks for employee ID', () => {
     expect(employee.id).toEqual(expect.any(Number))
     expect(employee.id).toBeGreaterThan(0)
 })
+
+// checking getName function in Employee class 
+test('Check for getName() in Employee Class', () => {
+    const employee = new Employee('Maki', 1)
+
+    expect(employee.getName()).toEqual('Maki')
+})
