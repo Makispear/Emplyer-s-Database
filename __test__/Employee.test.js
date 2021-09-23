@@ -1,8 +1,5 @@
 // properties :
-        // name
-        // id
-        // email
-        // getName()
+
         // getId()
         // getEmail()
         // getRole()  returns employee
@@ -46,4 +43,12 @@ test('Check for getName() method in Employee Class', () => {
     const employee = new Employee('Maki', 1)
 
     expect(employee.getName()).toEqual('Maki')
+})
+
+// gets id from the Employee class 
+test('checks for getId() in Employee class', () => {
+    const employee = new Employee('Maki', 1, 'maki-miko@hotmail.com')
+
+    expect(employee.getId()).toEqual(expect.any(Number))
+    console.log(employee.getId())
 })
