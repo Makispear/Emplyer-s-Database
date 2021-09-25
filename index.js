@@ -12,40 +12,40 @@ let dataArr = []
 // let engineersArr = []
 // let internsArr = []
 
-const getTeamMembers = () => {
-    inquirer
-    .prompt([
+const getTeamMembers = async () => {
+    await inquirer.prompt([
         {
             // asks for adding intern, engineer or finish project 
             type: 'list',
             name: 'addMember',
             message: '* Which type of team member would you like to add? (required!)',
-            choices: ['Engineer', 'Intern', "I'm done adding Team members!"],
-            // validate: addMember =>  {
-            //    return addMember
-            // }
+            choices: ['Engineer', 'Intern', "I'm done adding Team members!"]
         }
     ])
     .then(answer => {
         const {choice} = answer 
         if (choice === 'Engineer') {
-            return getEngineerInfo()
+            getEngineerInfo()
+            return
         } else if (choice === 'Intern') {
-           return getInternInfo()
+            getInternInfo()
+            return
         } else {
-            return console.log(dataArr)
+            console.log(dataArr)
+            return
         }
+        return
     })
 }
 
-const getManagerInfo = () => {
+const getManagerInfo = async () => {
     console.log(`
     =====================================
     Please Fill in Manager's Information:
     =====================================
     `)
     // asks for manager's name, id email and office number 
-    inquirer.prompt([
+    await inquirer.prompt([
     {
         type: 'input',
         name: 'managerName',
@@ -101,13 +101,12 @@ const getManagerInfo = () => {
 ])
 .then(answers => {
     const {name, id, email, officeNumber} = answers
-    return new Manager(name, id, email, officeNumber)
-})
-.then(obj => {
-    dataArr.push(obj)
+    const manager = new Manager(name, id, email, officeNumber)
+    dataArr.push(manager)
     console.log(dataArr)
+    getTeamMembers()
 })
-.then(getTeamMembers())
+
 }
 
 // prompts get Engineer name, email, github and id 
@@ -167,23 +166,23 @@ const getEngineerInfo = () => {
                 }
             }
         }
-    ]).then(obj => {
-        const {name, id, email, githubUsername} = obj
-        return new Engineer(name, id, email, githubUsername)
-    }).then(newObj => {
-        dataArr.push(newObj)
+    ]).then(answers => {
+        const {name, id, email, githubUsername} = answers
+        const engineer =  new Engineer(name, id, email, githubUsername)
+        dataArr.push(engineer)
+        console.log(dataArr)
+        getTeamMembers()
     })
-    .then(getTeamMembers())
 }
 
 // prompts get's intern's name , email, id and school name 
-const getInternInfo = () => {
+const getInternInfo = async () => {
     console.log(`
     ====================================
     Please Fill in Inters's Information:
     ====================================
     `)
-    return inquirer
+    await inquirer
     .prompt([
         {
             type: 'input',
@@ -234,13 +233,13 @@ const getInternInfo = () => {
             }
         }
     ])
-    .then(obj => {
-        const {name, id, email, schoolName} = obj
-        return new Intern(name, id, email, schoolName)
-    }).then(newObj => {
-        dataArr.push(newObj)
+    .then(answers => {
+        const {name, id, email, schoolName} = answers
+        const intern =  new Intern(name, id, email, schoolName)
+        dataArr.push(intern)
+        console.log(dataArr)
+        getTeamMembers()
     })
-    .then(getTeamMembers())
 }
 
 
