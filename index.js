@@ -3,12 +3,16 @@ const Manager = require('./lib/Manager.js')
 const Engineer = require('./lib/Engineer.js')
 const Intern = require('./lib/Intern.js')
 
+const generateTemplate = require('./src/generateTemplate.js')
+const writeFile = require('./utils/generateSite.js')
+
 const regName = /^[a-zA-Z,']+([a-zA-Z ,.'-]+)([a-z]+$)/
 const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
 const regId = /^[1-9][0-9]?/
 const regGitHubUsername = /^[a-z]+[a-z-][a-z]+$/i
 
 let dataArr = []
+let managersArr = []
 let engineersArr = []
 let internsArr = []
 
@@ -18,7 +22,7 @@ const getTeamMembers = async () => {
             // asks for adding intern, engineer or finish project 
             type: 'list',
             name: 'addMember',
-            message: '* Which type of team member would you like to add? (required!)',
+            message: 'Which type of team member would you like to add? (required!)',
             choices: ['Engineer', 'Intern', "I'm done adding Team members!"]
         }
     ])
@@ -29,17 +33,23 @@ const getTeamMembers = async () => {
         } else if (addMember === 'Intern') {
             getInternInfo()
         } else {
+            if (!managersArr === undefined || !managersArr.length == 0) {
+                dataArr.push(managersArr)
+            }
             if (!engineersArr === undefined || !engineersArr.length == 0) {
                 dataArr.push(engineersArr)
             }
             if (!internsArr === undefined || !internsArr.length == 0) {
                 dataArr.push(internsArr)
+                    generateTemplate(dataArr)
+                    .then(template => writeFile(template))
             }
-            console.log(dataArr)
-            // generate page
+            
         }
-        return
-    })
+        
+    }).then(
+        
+    )
 }
 
 const getManagerInfo = async () => {
@@ -53,7 +63,7 @@ const getManagerInfo = async () => {
     {
         type: 'input',
         name: 'name',
-        message: "* What is the team manager's name? (required!)",
+        message: "What is the team manager's name? (required!)",
         validate: managerName =>  {
             if (regName.test(managerName)) {
                 return true
@@ -66,7 +76,7 @@ const getManagerInfo = async () => {
     {
         type: 'input',
         name: 'Id',
-        message: "* What is the manager's Id Number? (required!)",
+        message: `What is the manager's Id Number? (required!)`,
         validate: managerId =>  {
             if (regId.test(managerId)) {
                 return true
@@ -79,7 +89,7 @@ const getManagerInfo = async () => {
     {
         type: 'input',
         name: 'email',
-        message: "* What is the manager's Email? (required!)",
+        message: "What is the manager's Email? (required!)",
         validate: managerEmail =>  {
             if (regEmail.test(managerEmail)) {
                 return true
@@ -92,7 +102,7 @@ const getManagerInfo = async () => {
     {
         type: "input",
         name: 'officeNumber',
-        message: "* What is the team manager's office number? (required!)",
+        message: "What is the team manager's office number? (required!)",
         validate: managerOfficeNumber =>  {
             if (managerOfficeNumber) {
                 return true
@@ -106,8 +116,7 @@ const getManagerInfo = async () => {
 .then(answers => {
     const {name, Id, email, officeNumber} = answers
     const manager = new Manager(name, Id, email, officeNumber)
-    dataArr.push(manager)
-    console.log(dataArr)
+    managersArr.push(manager)
     getTeamMembers()
 })
 
@@ -125,7 +134,7 @@ const getEngineerInfo = () => {
         {
             type: 'input',
             name: 'name',
-            message: "* What is your Engineer's name? (required!)",
+            message: "What is your Engineer's name? (required!)",
             validate: engineerName => {
                 if (regName.test(engineerName)) {
                     return true
@@ -137,7 +146,7 @@ const getEngineerInfo = () => {
         {
             type: "input",
             name: 'Id',
-            message: "* What is your Engineer's Id Number? (required!)",
+            message: "What is your Engineer's Id Number? (required!)",
             validate: engineerId => {
                 if (engineerId) {
                     return true
@@ -149,7 +158,7 @@ const getEngineerInfo = () => {
         {
             type: "input",
             name: 'email',
-            message: "* What is your Engineer's Email? (required!)",
+            message: "What is your Engineer's Email? (required!)",
             validate: engineerEmail => {
                 if (regEmail.test(engineerEmail)) {
                     return true
@@ -161,7 +170,7 @@ const getEngineerInfo = () => {
         {
             type: "input",
             name: 'gitHub',
-            message: "* What is your Engineer's Github username? (required!)",
+            message: "What is your Engineer's Github username? (required!)",
             validate: engineerGitHub => {
                 if (regGitHubUsername.test(engineerGitHub)) {
                     return true
@@ -190,7 +199,7 @@ const getInternInfo = async () => {
         {
             type: 'input',
             name: 'name',
-            message: "* What is your intern's name? (required!)",
+            message: "What is your intern's name? (required!)",
             validate: internName => {
                 if (regName.test(internName)) {
                     return true
@@ -202,7 +211,7 @@ const getInternInfo = async () => {
         {
             type: "input",
             name: 'Id',
-            message: "* What is your intern's Id Number? (required!)",
+            message: "What is your intern's Id Number? (required!)",
             validate: internId => {
                 if (internId) {
                     return true
@@ -214,7 +223,7 @@ const getInternInfo = async () => {
         {
             type: "input",
             name: 'email',
-            message: "* What is your intern's Email? (required!)",
+            message: "What is your intern's Email? (required!)",
             validate: internEmail => {
                 if (regEmail.test(internEmail)) {
                     return true
@@ -226,7 +235,7 @@ const getInternInfo = async () => {
         {
             type: 'input',
             name: 'schoolName',
-            message: "* What is your intern's school name? (required!)",
+            message: "What is your intern's school name? (required!)",
             validate: schoolName => {
                 if (regName.test(schoolName)) {
                     return true
