@@ -1,48 +1,93 @@
+// const Manager = require("../lib/Manager")
+
 // [
-//     [
-//       Manager {
-//         name: 'sdf',
-//         id: '213',
-//         email: 'asertfg@frs.fd',
-//         officeNumber: '412'
-//       }
-//     ]
-//   ]
+//     Manager {
+//       name: 'sdf',
+//       id: '123',
+//       email: 'ratf@fds.fd',
+//       officeNumber: 'esdf'
+//     },
+//     Engineer {
+//       name: 'sadf',
+//       id: '12',
+//       email: 'fr@fe.fd',
+//       githubUsername: 'frwes'
+//     }
+// ]
 
 
 generateTeam = teamInfo => {
-    teamInfo.forEach(list => {
-        if (list.constructor.name === Manager) {
-        teamInfo.map(obj => {
-            const {name, Id, email, officeNumber} = teamInfo
-            const role = teamInfo
+    teamInfo.map(constructor => {
+
+
+        if (constructor.getRole() === "Manager") {
+            let name = constructor.getName()
+            let id = constructor.getId()
+            let email = constructor.getEmail()
             return `
             <div class="shadow-lg w-auto bg-light m-3">
                 <div class="bg-primary text-white px-2 py-1">
                     <p>${name}</p>
-                    <p>${role}</p>
+                    
                 </div>
                 <div class="bg-light p-4 py-5">
                     <div>
-                        <div class="bg-white p-2 border">ID: ${Id}</div>
+                        <div class="bg-white p-2 border">ID: ${id}</div>
                         <div class="bg-white p-2 border">Email: ${email}</div>
-                        <div class="bg-white p-2 border">Office Number: ${officeNumber}</div>
+                        
                     </div>
                 </div>
             </div>
             `
-            })
-        }
+        } 
+        if (constructor.getRole() === "Engineer") {
+            let name = constructor.getName()
+            let id = constructor.getId()
+            let email = constructor.getEmail()
+            return `
+            <div class="shadow-lg w-auto bg-light m-3">
+                <div class="bg-primary text-white px-2 py-1">
+                    <p>${name}</p>
+                    
+                </div>
+                <div class="bg-light p-4 py-5">
+                    <div>
+                        <div class="bg-white p-2 border">ID: ${id}</div>
+                        <div class="bg-white p-2 border">Email: ${email}</div>
+                        
+                    </div>
+                </div>
+            </div>
+            `
+        } 
+        if (constructor.getRole() === "Intern") {
+            let name = constructor.getName()
+            let id = constructor.getId()
+            let email = constructor.getEmail()
+            return `
+            <div class="shadow-lg w-auto bg-light m-3">
+                <div class="bg-primary text-white px-2 py-1">
+                    <p>${name}</p>
+                    
+                </div>
+                <div class="bg-light p-4 py-5">
+                    <div>
+                        <div class="bg-white p-2 border">ID: ${id}</div>
+                        <div class="bg-white p-2 border">Email: ${email}</div>
+                        
+                    </div>
+                </div>
+            </div>
+            `
+        } 
+    })
+    .join('')
 
-    });
 
 }
 
 
 generateTemplate = teamInfo => {
-    // const {name, Id, email, officeNumber} = teamInfo[0]
-    // const role = teamInfo
-
 
     return `
     <!DOCTYPE html>

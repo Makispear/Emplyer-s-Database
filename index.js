@@ -13,10 +13,6 @@ const regGitHubUsername = /^[a-z]+[a-z-][a-z]+$/i
 
 let dataArr = []
 
-let managersArr = []
-let engineersArr = []
-let internsArr = []
-
 const getTeamMembers = async () => {
     await inquirer.prompt([
         {
@@ -33,17 +29,6 @@ const getTeamMembers = async () => {
             getEngineerInfo()
         } else if (addMember === 'Intern') {
             getInternInfo()
-        } else {
-            if (!managersArr === undefined || !managersArr.length == 0) {
-                dataArr.push(managersArr)
-            }
-            if (!engineersArr === undefined || !engineersArr.length == 0) {
-                dataArr.push(engineersArr)
-            }
-            if (!internsArr === undefined || !internsArr.length == 0) {
-                dataArr.push(internsArr)
-                   
-            }
         }
         let template = generateTemplate(dataArr)
         console.log(dataArr)
@@ -119,7 +104,7 @@ const getManagerInfo = async () => {
 .then(answers => {
     const {name, Id, email, officeNumber} = answers
     const manager = new Manager(name, Id, email, officeNumber)
-    managersArr.push(manager)
+    dataArr.push(manager)
     getTeamMembers()
 })
 
@@ -185,7 +170,7 @@ const getEngineerInfo = () => {
     ]).then(answers => {
         const {name, Id, email, gitHub} = answers
         const engineer =  new Engineer(name, Id, email, gitHub)
-        engineersArr.push(engineer)
+        dataArr.push(engineer)
         getTeamMembers()
     })
 }
@@ -251,7 +236,7 @@ const getInternInfo = async () => {
     .then(answers => {
         const {name, Id, email, schoolName} = answers
         const intern =  new Intern(name, Id, email, schoolName)
-        internsArr.push(intern)
+        dataArr.push(intern)
         getTeamMembers()
     })
 }
