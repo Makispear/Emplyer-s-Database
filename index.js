@@ -2,9 +2,9 @@ const inquirer = require('inquirer')
 const Manager = require('./lib/Manager.js')
 const Engineer = require('./lib/Engineer.js')
 const Intern = require('./lib/Intern.js')
+const fs = require('fs')
 
 const generateTemplate = require('./src/generateTemplate.js')
-const writeFile = require('./utils/generateSite.js')
 
 const regName = /^[a-zA-Z,']+([a-zA-Z ,.'-]+)([a-z]+$)/
 const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -12,6 +12,7 @@ const regId = /^[1-9][0-9]?/
 const regGitHubUsername = /^[a-z]+[a-z-][a-z]+$/i
 
 let dataArr = []
+
 let managersArr = []
 let engineersArr = []
 let internsArr = []
@@ -41,16 +42,18 @@ const getTeamMembers = async () => {
             }
             if (!internsArr === undefined || !internsArr.length == 0) {
                 dataArr.push(internsArr)
-                    generateTemplate(dataArr)
-                    .then(template => writeFile(template))
+                   
             }
-            
         }
-        
-    }).then(
-        
-    )
+        let template = generateTemplate(dataArr)
+        console.log(dataArr)
+
+        fs.writeFile('./dist/index.html', template, err => {
+            if (err) throw err;
+        })
+})
 }
+
 
 const getManagerInfo = async () => {
     console.log(`
