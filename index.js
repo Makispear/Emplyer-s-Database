@@ -9,8 +9,8 @@ const regId = /^[1-9][0-9]?/
 const regGitHubUsername = /^[a-z]+[a-z-][a-z]+$/i
 
 let dataArr = []
-// let engineersArr = []
-// let internsArr = []
+let engineersArr = []
+let internsArr = []
 
 const getTeamMembers = async () => {
     await inquirer.prompt([
@@ -23,16 +23,20 @@ const getTeamMembers = async () => {
         }
     ])
     .then(answer => {
-        const {choice} = answer 
-        if (choice === 'Engineer') {
+        const {addMember} = answer 
+        if (addMember === 'Engineer') {
             getEngineerInfo()
-            return
-        } else if (choice === 'Intern') {
+        } else if (addMember === 'Intern') {
             getInternInfo()
-            return
         } else {
+            if (!engineersArr === undefined || !engineersArr.length == 0) {
+                dataArr.push(engineersArr)
+            }
+            if (!internsArr === undefined || !internsArr.length == 0) {
+                dataArr.push(internsArr)
+            }
             console.log(dataArr)
-            return
+            // generate page
         }
         return
     })
@@ -48,7 +52,7 @@ const getManagerInfo = async () => {
     await inquirer.prompt([
     {
         type: 'input',
-        name: 'managerName',
+        name: 'name',
         message: "* What is the team manager's name? (required!)",
         validate: managerName =>  {
             if (regName.test(managerName)) {
@@ -61,8 +65,8 @@ const getManagerInfo = async () => {
     },
     {
         type: 'input',
-        name: 'managerId',
-        message: "* What is the manager's Id? (required!)",
+        name: 'Id',
+        message: "* What is the manager's Id Number? (required!)",
         validate: managerId =>  {
             if (regId.test(managerId)) {
                 return true
@@ -74,7 +78,7 @@ const getManagerInfo = async () => {
     },
     {
         type: 'input',
-        name: 'managerEmail',
+        name: 'email',
         message: "* What is the manager's Email? (required!)",
         validate: managerEmail =>  {
             if (regEmail.test(managerEmail)) {
@@ -87,7 +91,7 @@ const getManagerInfo = async () => {
     },
     {
         type: "input",
-        name: 'managerOfficeNumber',
+        name: 'officeNumber',
         message: "* What is the team manager's office number? (required!)",
         validate: managerOfficeNumber =>  {
             if (managerOfficeNumber) {
@@ -100,8 +104,8 @@ const getManagerInfo = async () => {
     }
 ])
 .then(answers => {
-    const {name, id, email, officeNumber} = answers
-    const manager = new Manager(name, id, email, officeNumber)
+    const {name, Id, email, officeNumber} = answers
+    const manager = new Manager(name, Id, email, officeNumber)
     dataArr.push(manager)
     console.log(dataArr)
     getTeamMembers()
@@ -120,7 +124,7 @@ const getEngineerInfo = () => {
     .prompt([
         {
             type: 'input',
-            name: 'engineerName',
+            name: 'name',
             message: "* What is your Engineer's name? (required!)",
             validate: engineerName => {
                 if (regName.test(engineerName)) {
@@ -132,8 +136,8 @@ const getEngineerInfo = () => {
         },
         {
             type: "input",
-            name: 'engineerId',
-            message: "* What is your Engineer's Id? (required!)",
+            name: 'Id',
+            message: "* What is your Engineer's Id Number? (required!)",
             validate: engineerId => {
                 if (engineerId) {
                     return true
@@ -144,7 +148,7 @@ const getEngineerInfo = () => {
         },
         {
             type: "input",
-            name: 'engineerEmail',
+            name: 'email',
             message: "* What is your Engineer's Email? (required!)",
             validate: engineerEmail => {
                 if (regEmail.test(engineerEmail)) {
@@ -156,7 +160,7 @@ const getEngineerInfo = () => {
         },
         {
             type: "input",
-            name: 'engineerGitHub',
+            name: 'gitHub',
             message: "* What is your Engineer's Github username? (required!)",
             validate: engineerGitHub => {
                 if (regGitHubUsername.test(engineerGitHub)) {
@@ -167,10 +171,9 @@ const getEngineerInfo = () => {
             }
         }
     ]).then(answers => {
-        const {name, id, email, githubUsername} = answers
-        const engineer =  new Engineer(name, id, email, githubUsername)
-        dataArr.push(engineer)
-        console.log(dataArr)
+        const {name, Id, email, gitHub} = answers
+        const engineer =  new Engineer(name, Id, email, gitHub)
+        engineersArr.push(engineer)
         getTeamMembers()
     })
 }
@@ -186,7 +189,7 @@ const getInternInfo = async () => {
     .prompt([
         {
             type: 'input',
-            name: 'internName',
+            name: 'name',
             message: "* What is your intern's name? (required!)",
             validate: internName => {
                 if (regName.test(internName)) {
@@ -198,8 +201,8 @@ const getInternInfo = async () => {
         },
         {
             type: "input",
-            name: 'internId',
-            message: "* What is your intern's Id? (required!)",
+            name: 'Id',
+            message: "* What is your intern's Id Number? (required!)",
             validate: internId => {
                 if (internId) {
                     return true
@@ -210,7 +213,7 @@ const getInternInfo = async () => {
         },
         {
             type: "input",
-            name: 'internEmail',
+            name: 'email',
             message: "* What is your intern's Email? (required!)",
             validate: internEmail => {
                 if (regEmail.test(internEmail)) {
@@ -222,7 +225,7 @@ const getInternInfo = async () => {
         },
         {
             type: 'input',
-            name: 'internSchool',
+            name: 'schoolName',
             message: "* What is your intern's school name? (required!)",
             validate: schoolName => {
                 if (regName.test(schoolName)) {
@@ -234,10 +237,9 @@ const getInternInfo = async () => {
         }
     ])
     .then(answers => {
-        const {name, id, email, schoolName} = answers
-        const intern =  new Intern(name, id, email, schoolName)
-        dataArr.push(intern)
-        console.log(dataArr)
+        const {name, Id, email, schoolName} = answers
+        const intern =  new Intern(name, Id, email, schoolName)
+        internsArr.push(intern)
         getTeamMembers()
     })
 }
