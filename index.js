@@ -9,9 +9,11 @@ const regId = /^[1-9][0-9]?/
 const regGitHubUsername = /^[a-z]+[a-z-][a-z]+$/i
 
 let dataArr = []
+// let engineersArr = []
+// let internsArr = []
 
-getTeamMembers = () => {
-    return inquirer
+const getTeamMembers = () => {
+    inquirer
     .prompt([
         {
             // asks for adding intern, engineer or finish project 
@@ -19,22 +21,31 @@ getTeamMembers = () => {
             name: 'addMember',
             message: '* Which type of team member would you like to add? (required!)',
             choices: ['Engineer', 'Intern', "I'm done adding Team members!"],
-            validate: addMember =>  {
-               return addMember
-            }
+            // validate: addMember =>  {
+            //    return addMember
+            // }
         }
     ])
+    .then(answer => {
+        const {choice} = answer 
+        if (choice === 'Engineer') {
+            return getEngineerInfo()
+        } else if (choice === 'Intern') {
+           return getInternInfo()
+        } else {
+            return console.log(dataArr)
+        }
+    })
 }
 
-
-getManagerInfo = () => {
+const getManagerInfo = () => {
     console.log(`
     =====================================
     Please Fill in Manager's Information:
     =====================================
     `)
     // asks for manager's name, id email and office number 
-    return inquirer.prompt([
+    inquirer.prompt([
     {
         type: 'input',
         name: 'managerName',
@@ -88,16 +99,25 @@ getManagerInfo = () => {
         }
     }
 ])
+.then(answers => {
+    const {name, id, email, officeNumber} = answers
+    return new Manager(name, id, email, officeNumber)
+})
+.then(obj => {
+    dataArr.push(obj)
+    console.log(dataArr)
+})
+.then(getTeamMembers())
 }
 
 // prompts get Engineer name, email, github and id 
-getEngineerInfo = () => {
+const getEngineerInfo = () => {
     console.log(`
     ======================================
     Please Fill in Engineer's Information:
     ======================================
     `)
-   return inquirer
+    inquirer
     .prompt([
         {
             type: 'input',
@@ -147,11 +167,17 @@ getEngineerInfo = () => {
                 }
             }
         }
-    ])
+    ]).then(obj => {
+        const {name, id, email, githubUsername} = obj
+        return new Engineer(name, id, email, githubUsername)
+    }).then(newObj => {
+        dataArr.push(newObj)
+    })
+    .then(getTeamMembers())
 }
 
 // prompts get's intern's name , email, id and school name 
-getInternInfo = () => {
+const getInternInfo = () => {
     console.log(`
     ====================================
     Please Fill in Inters's Information:
@@ -208,20 +234,14 @@ getInternInfo = () => {
             }
         }
     ])
+    .then(obj => {
+        const {name, id, email, schoolName} = obj
+        return new Intern(name, id, email, schoolName)
+    }).then(newObj => {
+        dataArr.push(newObj)
+    })
+    .then(getTeamMembers())
 }
 
 
 getManagerInfo()
-.then(managerInfo => {
-    // DATA ARRAY: should contain:
-    // 1 manager info object
-    // a list of objects of team members (all engineers and interns added)
-    dataArr.push(managerInfo)
-    return getTeamMembers()
-})
-.then(teamMemberInfo => {
-    let addedTeam = []
-    addedTeam.push(teamMemberInfo)
-    getTeamMembers()
-    dataArr.push(addedTeam)
-})
