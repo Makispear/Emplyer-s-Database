@@ -31,7 +31,7 @@ return `
                     <ul class="list-group">
                         <li class="list-group-item bg-white">ID: ${engineer.getId()}</li>
                         <li class="list-group-item bg-white">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
-                        <li class="list-group-item bg-white">GitHub: ${engineer.getGithub()}</li>
+                        <li class="list-group-item bg-white">GitHub: <a href="https://github.com/${engineer.getGithub()}">${engineer.getGithub()}</a></li>
                     </ul>
                 </div>
             </div>
