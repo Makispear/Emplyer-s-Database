@@ -1,88 +1,77 @@
-// const Manager = require("../lib/Manager")
+const generateTeam = teamInfo => {
 
-// [
-//     Manager {
-//       name: 'sdf',
-//       id: '123',
-//       email: 'ratf@fds.fd',
-//       officeNumber: 'esdf'
-//     },
-//     Engineer {
-//       name: 'sadf',
-//       id: '12',
-//       email: 'fr@fe.fd',
-//       githubUsername: 'frwes'
-//     }
-// ]
+    let template = [];
 
-
-generateTeam = teamInfo => {
-    teamInfo.map(constructor => {
-
-
-        if (constructor.getRole() === "Manager") {
-            let name = constructor.getName()
-            let id = constructor.getId()
-            let email = constructor.getEmail()
-            return `
-            <div class="shadow-lg w-auto bg-light m-3">
-                <div class="bg-primary text-white px-2 py-1">
-                    <p>${name}</p>
-                    
+    const generateManager = manager => {
+return `
+            <div class="card employee-card m-3 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title">${manager.getName()}</h2>
+                    <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i> ${manager.getRole()}</h3>
                 </div>
-                <div class="bg-light p-4 py-5">
-                    <div>
-                        <div class="bg-white p-2 border">ID: ${id}</div>
-                        <div class="bg-white p-2 border">Email: ${email}</div>
-                        
-                    </div>
+                <div class="card-body bg-light">
+                    <ul class="list-group">
+                        <li class="list-group-item bg-white">ID: ${manager.getId()}</li>
+                        <li class="list-group-item bg-white">Email: <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></li>
+                        <li class="list-group-item bg-white">Office number: ${manager.officeNumber}</li>
+                    </ul>
                 </div>
             </div>
-            `
-        } 
-        if (constructor.getRole() === "Engineer") {
-            let name = constructor.getName()
-            let id = constructor.getId()
-            let email = constructor.getEmail()
-            return `
-            <div class="shadow-lg w-auto bg-light m-3">
-                <div class="bg-primary text-white px-2 py-1">
-                    <p>${name}</p>
-                    
-                </div>
-                <div class="bg-light p-4 py-5">
-                    <div>
-                        <div class="bg-white p-2 border">ID: ${id}</div>
-                        <div class="bg-white p-2 border">Email: ${email}</div>
-                        
-                    </div>
-                </div>
-            </div>
-            `
-        } 
-        if (constructor.getRole() === "Intern") {
-            let name = constructor.getName()
-            let id = constructor.getId()
-            let email = constructor.getEmail()
-            return `
-            <div class="shadow-lg w-auto bg-light m-3">
-                <div class="bg-primary text-white px-2 py-1">
-                    <p>${name}</p>
-                    
-                </div>
-                <div class="bg-light p-4 py-5">
-                    <div>
-                        <div class="bg-white p-2 border">ID: ${id}</div>
-                        <div class="bg-white p-2 border">Email: ${email}</div>
-                        
-                    </div>
-                </div>
-            </div>
-            `
-        } 
-    })
-    .join('')
+        `
+    };
 
+    const generateEngineer = engineer => {
+return `
+            <div class="card employee-card m-3 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title">${engineer.getName()}</h2>
+                    <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i> ${engineer.getRole()}</h3>
+                </div>
+                <div class="card-body bg-light">
+                    <ul class="list-group">
+                        <li class="list-group-item bg-white">ID: ${engineer.getId()}</li>
+                        <li class="list-group-item bg-white">Email: <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></li>
+                        <li class="list-group-item bg-white">Office number: ${engineer.getGithub()}</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    };
+
+    const generateIntern = intern => {
+return `
+            <div class="card employee-card m-3 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title">${intern.getName()}</h2>
+                    <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i> ${intern.getRole()}</h3>
+                </div>
+                <div class="card-body bg-light">
+                    <ul class="list-group">
+                        <li class="list-group-item bg-white">ID: ${intern.getId()}</li>
+                        <li class="list-group-item bg-white">Email: <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></li>
+                        <li class="list-group-item bg-white">Office number: ${intern.getSchool()}</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    };
+
+    template.push(
+        teamInfo
+        .filter(employee => employee.getRole() === "Manager")
+        .map(manager => generateManager(manager)))
+
+    template.push(
+        teamInfo
+        .filter(employee => employee.getRole() === "Engineer")
+        .map(engineer => generateEngineer(engineer)))
+
+    template.push(
+        teamInfo
+        .filter(employee => employee.getRole() === "Intern")
+        .map(intern => generateIntern(intern)));
+
+    return template.join("")
 
 }
 
@@ -113,6 +102,7 @@ generateTemplate = teamInfo => {
             ${generateTeam(teamInfo)}
         </div>
     </div>
+<script src="https://kit.fontawesome.com/074e1ad80a.js" crossorigin="anonymous"></script>
 </body>
 </html>`
 }

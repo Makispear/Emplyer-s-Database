@@ -1,16 +1,20 @@
-const inquirer = require('inquirer')
+// CLASSES 
 const Manager = require('./lib/Manager.js')
 const Engineer = require('./lib/Engineer.js')
 const Intern = require('./lib/Intern.js')
 const fs = require('fs')
 
+// PAGES 
 const generateTemplate = require('./src/generateTemplate.js')
+const inquirer = require('inquirer')
 
-const regName = /^[a-zA-Z,']+([a-zA-Z ,.'-]+)([a-z]+$)/
+// REGULAR EXPRESSIONS 
+const regName = /^[a-zA-Z]+([a-zA-Z ,.'-]+)?([a-z]+$)/
 const regEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-const regId = /^[1-9][0-9]?/
+const regId = /^[0-9]+$/
 const regGitHubUsername = /^[a-z]+[a-z-][a-z]+$/i
 
+// DATA NEEDED FOR PAGE 
 let dataArr = []
 
 const getTeamMembers = async () => {
@@ -29,13 +33,16 @@ const getTeamMembers = async () => {
             getEngineerInfo()
         } else if (addMember === 'Intern') {
             getInternInfo()
+        } else {
+            let template = generateTemplate(dataArr)
+            fs.writeFile('./dist/index.html', template, err => {
+                if (err) throw err;
+                console.log(`
+                Your team has been created!
+                `)
+            })
         }
-        let template = generateTemplate(dataArr)
-        console.log(dataArr)
 
-        fs.writeFile('./dist/index.html', template, err => {
-            if (err) throw err;
-        })
 })
 }
 
@@ -56,7 +63,7 @@ const getManagerInfo = async () => {
             if (regName.test(managerName)) {
                 return true
             } else {
-                console.log(`\nPlease Enter a Valid Name!`)
+                console.log(`\nPlease Enter a Valid Name!\n`)
                 return false
             }
         }
@@ -69,7 +76,7 @@ const getManagerInfo = async () => {
             if (regId.test(managerId)) {
                 return true
             } else {
-                console.log(`\nPlease Enter a Valid Number!`)
+                console.log(`\nPlease Enter a Valid Number!\n`)
                 return false
             }
         }
@@ -82,7 +89,7 @@ const getManagerInfo = async () => {
             if (regEmail.test(managerEmail)) {
                 return true
             } else {
-                console.log(`\nPlease Enter a Valid Email!`)
+                console.log(`\nPlease Enter a Valid Email!\n`)
                 return false
             }
         }
@@ -92,7 +99,7 @@ const getManagerInfo = async () => {
         name: 'officeNumber',
         message: "What is the team manager's office number? (required!)",
         validate: managerOfficeNumber =>  {
-            if (managerOfficeNumber) {
+            if (regId.test(managerOfficeNumber)) {
                 return true
             } else {
                 console.log(`\nPlease Enter a Valid Email!`)
@@ -111,13 +118,13 @@ const getManagerInfo = async () => {
 }
 
 // prompts get Engineer name, email, github and id 
-const getEngineerInfo = () => {
+const getEngineerInfo = async ()  => {
     console.log(`
     ======================================
     Please Fill in Engineer's Information:
     ======================================
     `)
-    inquirer
+    await inquirer
     .prompt([
         {
             type: 'input',
@@ -127,6 +134,7 @@ const getEngineerInfo = () => {
                 if (regName.test(engineerName)) {
                     return true
                 } else {
+                console.log(`\nPlease Enter a Valid Name!\n`)
                     return false
                 }
             }
@@ -136,9 +144,10 @@ const getEngineerInfo = () => {
             name: 'Id',
             message: "What is your Engineer's Id Number? (required!)",
             validate: engineerId => {
-                if (engineerId) {
+                if (regId.test(engineerId)) {
                     return true
                 } else {
+                console.log(`\nPlease Enter a Valid Number!\n`)
                     return false
                 }
             }
@@ -151,6 +160,7 @@ const getEngineerInfo = () => {
                 if (regEmail.test(engineerEmail)) {
                     return true
                 } else {
+                console.log(`\nPlease Enter a Valid Email!\n`)
                     return false
                 }
             }
@@ -192,6 +202,7 @@ const getInternInfo = async () => {
                 if (regName.test(internName)) {
                     return true
                 } else {
+                console.log(`\nPlease Enter a Valid Name!\n`)
                     return false
                 }
             }
@@ -200,10 +211,11 @@ const getInternInfo = async () => {
             type: "input",
             name: 'Id',
             message: "What is your intern's Id Number? (required!)",
-            validate: internId => {
-                if (internId) {
+            validate: internId =>  {
+                if (regId.test(internId)) {
                     return true
                 } else {
+                    console.log(`\nPlease Enter a Valid Number!\n`)
                     return false
                 }
             }
@@ -216,6 +228,7 @@ const getInternInfo = async () => {
                 if (regEmail.test(internEmail)) {
                     return true
                 } else {
+                console.log(`\nPlease Enter a Valid Email!\n`)
                     return false
                 }
             }
@@ -228,6 +241,7 @@ const getInternInfo = async () => {
                 if (regName.test(schoolName)) {
                     return true
                 } else {
+                console.log(`\nPlease Enter a Valid School Name!\n`)
                     return false
                 }
             }
