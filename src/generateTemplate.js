@@ -43,7 +43,7 @@ return `
             <div class="card employee-card m-3 shadow-sm">
                 <div class="card-header bg-primary text-white">
                     <h2 class="card-title">${intern.getName()}</h2>
-                    <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i> ${intern.getRole()}</h3>
+                    <h3 class="card-title"><i class="fas fa-user-graduate"></i> ${intern.getRole()}</h3>
                 </div>
                 <div class="card-body bg-light">
                     <ul class="list-group">
